@@ -5,13 +5,14 @@ import pickle
 sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
-from tester import dump_classifier_and_data,test_classifier
+import tester
+from tester import dump_classifier_and_data
 import pandas as pd
 import numpy as np
 
 from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.preprocessing import Imputer
-from feature_preparation import model_tuning
+from model_tuning import model_tuning
 #model_training_evaluation,
 
 ### Task 1: Select what features you'll use.
@@ -108,62 +109,57 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier, ExtraTreesClassifier
-from sklearn.preprocessing import StandardScaler
 
 #### Naive Bayes based on different method of feature selection
 ####
 ####
 pipe_NB_SK=make_pipeline(SelectKBest(f_classif),
-                        StandardScaler(),
                         GaussianNB())
 param_NB_SK={ 'selectkbest__k':[i for i in xrange(6,20)]}
 result_NB_SK= model_tuning(pipe_NB_SK, param_NB_SK, features2,labels2)
 
 pipe_NB_PCA=make_pipeline(Imputer(strategy='median', axis=0),
                          PCA(),
-                        StandardScaler(),
                         GaussianNB())
 param_NB_PCA={ 'pca__n_components': [10,12,14,16,18,20]}
 result_NB_PCA= model_tuning(pipe_NB_PCA, param_NB_PCA, features2,labels2)
 
 pipe_NB_DT=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectFromModel(ExtraTreesClassifier()),
-                        StandardScaler(),
                         GaussianNB())
 param_NB_DT={}
 result_NB_DT= model_tuning(pipe_NB_DT, param_NB_DT, features2,labels2)
-
+#print result_NB_DT
 ####
+###
 
 #### Logistic Regression based on different method of feature selection
 ###
 ###
 pipe_LR_SK=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectKBest(f_classif),
-                        StandardScaler(),
                         LogisticRegression())
 param_LR_SK={ 'logisticregression__penalty':('l1', 'l2'),
-    'logisticregression__C':[1.0, 0.1, 0.01, 0.001, 0.0001, 0.00001],
+    'logisticregression__C':[0.05, 0.5, 1, 10, 10**2, 10**3, 10**5, 10**10, 10**15],
               'selectkbest__k': [i for i in xrange(6, 20)]}
 result_LR_SK= model_tuning(pipe_LR_SK, param_LR_SK, features2,labels2)
 
 
 pipe_LR_PCA=make_pipeline(Imputer(strategy='median', axis=0),
                     PCA(),
-                    StandardScaler(),
                     LogisticRegression())
 param_LR_PCA={ 'logisticregression__penalty':('l1', 'l2'),
-    'logisticregression__C':[1.0, 0.1, 0.01, 0.001, 0.0001, 0.00001],
+    'logisticregression__C':[0.05, 0.5, 1, 10, 10**2, 10**3, 10**5, 10**10, 10**15],
                'pca__n_components': [10,12,14,16,18,20]}
 result_LR_PCA = model_tuning(pipe_LR_PCA, param_LR_PCA, features2,labels2)
 
 
 pipe_LR_DT=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectFromModel(ExtraTreesClassifier()),
-                         StandardScaler(),
                    LogisticRegression())
 param_LR_DT={ 'logisticregression__penalty':('l1', 'l2'),
-    'logisticregression__C':[1.0, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
+    'logisticregression__C':[0.05, 0.5, 1, 10, 10**2, 10**3, 10**5, 10**10, 10**15]
+              }
 result_LR_DT = model_tuning(pipe_LR_DT, param_LR_DT, features2,labels2)
 ###
 ###
@@ -173,7 +169,6 @@ result_LR_DT = model_tuning(pipe_LR_DT, param_LR_DT, features2,labels2)
 ###
 pipe_KNN_SK=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectKBest(f_classif),
-                          StandardScaler(),
                           KNeighborsClassifier())
 param_KNN_SK={ 'kneighborsclassifier__n_neighbors':[3,5,7,10],
                'selectkbest__k': [i for i in xrange(6, 20)]}
@@ -183,7 +178,6 @@ result_KNN_SK= model_tuning(pipe_KNN_SK, param_KNN_SK, features2,labels2)
 
 pipe_KNN_PCA=make_pipeline(Imputer(strategy='median', axis=0),
                     PCA(),
-                    StandardScaler(),
                     KNeighborsClassifier())
 param_KNN_PCA={ 'kneighborsclassifier__n_neighbors':[3,5,7,10],
                'pca__n_components': [10,12,14,16,18,20]}
@@ -192,9 +186,9 @@ result_KNN_PCA = model_tuning(pipe_KNN_PCA, param_KNN_PCA, features2,labels2)
 
 pipe_KNN_DT=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectFromModel(ExtraTreesClassifier()),
-                          StandardScaler(),
                           KNeighborsClassifier())
-param_KNN_DT={ 'kneighborsclassifier__n_neighbors':[3,5,7,10]}
+param_KNN_DT={ 'kneighborsclassifier__n_neighbors':[3,5,7,10]
+               }
 result_KNN_DT = model_tuning(pipe_KNN_DT, param_KNN_DT, features2,labels2)
 
 ###
@@ -205,11 +199,12 @@ result_KNN_DT = model_tuning(pipe_KNN_DT, param_KNN_DT, features2,labels2)
 ###
 pipe_RF_SK=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectKBest(f_classif),
-                         StandardScaler(),
                          RandomForestClassifier())
 param_RF_SK={ 'randomforestclassifier__n_estimators':[5,8,10,12,15,20],
 'randomforestclassifier__criterion': ('gini','entropy'),
 'randomforestclassifier__bootstrap': (True,False),
+'randomforestclassifier__min_samples_leaf': [1, 2, 3, 4, 5],
+'randomforestclassifier__min_samples_split': [2, 3, 4, 5],
                'selectkbest__k': [i for i in xrange(6, 20)]}
 
 result_RF_SK= model_tuning(pipe_RF_SK, param_RF_SK, features2,labels2)
@@ -217,22 +212,25 @@ result_RF_SK= model_tuning(pipe_RF_SK, param_RF_SK, features2,labels2)
 
 pipe_RF_PCA=make_pipeline(Imputer(strategy='median', axis=0),
                     PCA(),
-                    StandardScaler(),
                     RandomForestClassifier())
 param_RF_PCA={ 'randomforestclassifier__n_estimators':[5,8,10,12,15,20],
 'randomforestclassifier__criterion': ('gini','entropy'),
 'randomforestclassifier__bootstrap': (True,False),
-               'pca__n_components': [10,12,14,16,18,20]}
+               'pca__n_components': [10,12,14,16,18,20],
+               'randomforestclassifier__min_samples_leaf': [1, 2, 3, 4, 5],
+               'randomforestclassifier__min_samples_split': [2, 3, 4, 5]
+               }
 result_RF_PCA = model_tuning(pipe_RF_PCA, param_RF_PCA, features2,labels2)
 
 
 pipe_RF_DT=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectFromModel(ExtraTreesClassifier()),
-                         StandardScaler(),
                          RandomForestClassifier())
 param_RF_DT={ 'randomforestclassifier__n_estimators':[5,8,10,12,15,20],
 'randomforestclassifier__criterion': ('gini','entropy'),
-'randomforestclassifier__bootstrap': (True,False)}
+'randomforestclassifier__bootstrap': (True,False),
+'randomforestclassifier__min_samples_leaf': [1, 2, 3, 4, 5],
+'randomforestclassifier__min_samples_split': [2, 3, 4, 5]}
 result_RF_DT = model_tuning(pipe_RF_DT, param_RF_DT, features2,labels2)
 
 ###
@@ -244,18 +242,16 @@ result_RF_DT = model_tuning(pipe_RF_DT, param_RF_DT, features2,labels2)
 
 pipe_AB_SK=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectKBest(f_classif),
-                         StandardScaler(),
                          AdaBoostClassifier())
 param_AB_SK={'adaboostclassifier__n_estimators': [5,8,10,12,15,20],
               'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R'],
-               'selectkbest__k': [10,15,20]
+               'selectkbest__k': [i for i in xrange(6, 20)]
 }
 result_AB_SK= model_tuning(pipe_AB_SK, param_AB_SK, features2,labels2)
 
 
 pipe_AB_PCA=make_pipeline(Imputer(strategy='median', axis=0),
                     PCA(),
-                    StandardScaler(),
                     AdaBoostClassifier())
 param_AB_PCA={'adaboostclassifier__n_estimators': [5,8,10,12,15,20],
               'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R'],
@@ -265,19 +261,15 @@ result_AB_PCA = model_tuning(pipe_AB_PCA, param_AB_PCA, features2,labels2)
 
 pipe_AB_DT=make_pipeline(Imputer(strategy='median', axis=0),
                          SelectFromModel(ExtraTreesClassifier()),
-                         StandardScaler(),
                          AdaBoostClassifier())
 param_AB_DT={
               'adaboostclassifier__n_estimators': [5,8,10,12,15,20],
-              'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R']}
+              'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R']
+}
 result_AB_DT = model_tuning(pipe_AB_DT, param_AB_DT, features2,labels2)
 
 ###
 ###
-
-
-###
-
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -287,40 +279,33 @@ result_AB_DT = model_tuning(pipe_AB_DT, param_AB_DT, features2,labels2)
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
 # Example starting point. Try investigating other evaluation techniques!
-# Naive Bayes
-print 'Naive Bayes'
-test_classifier(result_NB_SK,my_dataset, feature_list)
-test_classifier(result_NB_PCA,my_dataset, feature_list)
-test_classifier(result_NB_DT,my_dataset, feature_list)
+#from sklearn.model_selection import StratifiedShuffleSplit
 
-## Logistic Regression
-print 'Logistic Regression'
-test_classifier(result_LR_SK,my_dataset, feature_list)
-test_classifier(result_LR_PCA,my_dataset, feature_list)
-test_classifier(result_LR_DT,my_dataset, feature_list)
+#sss = StratifiedShuffleSplit(n_splits=10, test_size=0.3, random_state=0)
 
+tester.test_classifier(result_RF_SK, my_dataset, feature_list)
+tester.test_classifier(result_NB_PCA, my_dataset, feature_list)
+tester.test_classifier(result_NB_DT, my_dataset, feature_list)
 
-## K Nearest Neighbor
-print 'Logistic Regression'
-test_classifier(result_KNN_SK,my_dataset, feature_list)
-test_classifier(result_KNN_PCA,my_dataset, feature_list)
-test_classifier(result_KNN_DT,my_dataset, feature_list)
+tester.test_classifier(result_LR_SK, my_dataset, feature_list)
+tester.test_classifier(result_LR_PCA, my_dataset, feature_list)
+tester.test_classifier(result_LR_DT, my_dataset, feature_list)
 
-## Random Forest
-print 'Random Forest'
-test_classifier(result_RF_SK,my_dataset, feature_list)
-test_classifier(result_RF_PCA,my_dataset, feature_list)
-test_classifier(result_RF_DT,my_dataset, feature_list)
+tester.test_classifier(result_KNN_SK, my_dataset, feature_list)
+tester.test_classifier(result_KNN_PCA, my_dataset, feature_list)
+tester.test_classifier(result_KNN_DT, my_dataset, feature_list)
 
-## Adaboost
-print 'Adaboost'
-test_classifier(result_AB_SK,my_dataset, feature_list)
-test_classifier(result_AB_PCA,my_dataset, feature_list)
-test_classifier(result_AB_DT,my_dataset, feature_list)
+tester.test_classifier(result_RF_SK, my_dataset, feature_list)
+tester.test_classifier(result_RF_PCA, my_dataset, feature_list)
+tester.test_classifier(result_RF_DT, my_dataset, feature_list)
+
+tester.test_classifier(result_AB_SK, my_dataset, feature_list)
+tester.test_classifier(result_AB_PCA, my_dataset, feature_list)
+tester.test_classifier(result_AB_DT, my_dataset, feature_list)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
 ### that the version of poi_id.py that you submit can be run on its own and
 ### generates the necessary .pkl files for validating your results.
 
-dump_classifier_and_data(test_classifier(result_AB_SK,my_dataset, feature_list), my_dataset, feature_list)
+dump_classifier_and_data(result_AB_DT, my_dataset, feature_list)

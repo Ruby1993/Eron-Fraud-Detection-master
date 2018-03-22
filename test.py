@@ -9,12 +9,15 @@
 
     that process should happen at the end of poi_id.py
 """
-
+from feature_format import featureFormat, targetFeatureSplit
 import pickle
 import sys
 from sklearn.cross_validation import StratifiedShuffleSplit
 sys.path.append("../tools/")
-from feature_format import featureFormat, targetFeatureSplit
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+
+
 
 PERF_FORMAT_STRING = "\
 \tAccuracy: {:>0.{display_precision}f}\tPrecision: {:>0.{display_precision}f}\t\

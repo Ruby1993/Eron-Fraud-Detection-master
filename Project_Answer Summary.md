@@ -1,10 +1,5 @@
 Project Summary
 
-1. Summarize for us the goal of this project and how machine learning is useful
-in trying to accomplish it. As part of your answer, give some background on the
-dataset and how it can be used to answer the project question.
-Were there any outliers in the data when you got it, and how did you handle those?
-
 Project Background
 In 2000, Enron was one of the largest companies in the United States.
 By 2002, it had collapsed into bankruptcy due to widespread corporate fraud.
@@ -25,6 +20,21 @@ Problem Simplification
 Identify persons who are in the corporate fraud based on the available data
 within financial features, email features, and available 'poi' labels.
 
+Dataset Overview
+
+For the dataset we had, there are 146 records and 21 variables.
+
+The 21 variables including financial features, email features,poi labels, which I listed below,
+
+financial features(14)
+['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees'] (all units are in US dollars)
+
+Email features(6)
+['to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi'] (units are generally number of emails messages; notable exception is ‘email_address’, which is a text string)
+
+POI Feature-POI label(1)
+[‘poi’] (boolean, represented as integer)
+
 Outliers Issue
 Based on data exploration, there are several outliers I found and will remove,
 - TOTAL: This row is the sum of each variable, which need to removed.
@@ -32,20 +42,10 @@ Based on data exploration, there are several outliers I found and will remove,
 variables.
 - THE TRAVEL AGENCY IN THE PARK: Not related to the person based on the name.
 
-2. What features did you end up using in your POI identifier, and what selection
-process did you use to pick them? Did you have to do any scaling? Why or why not?
-As part of the assignment, you should attempt to engineer your own feature that
-does not come ready-made in the dataset -- explain what feature you tried to make,
-and the rationale behind it. (You do not necessarily have to use it in the final
-analysis, only engineer and test it.) In your feature selection step, if you used
-an algorithm like a decision tree, please also give the feature importances of
-the features that you use, and if you used an automated feature selection
-function like SelectKBest, please report the feature scores and reasons for
-your choice of parameter values.  [relevant rubric items: “create new features”,
-“intelligently select features”, “properly scale features”]
 
 Feature selection process
 
+New Feature engineered
 Before feature selection, I added three features related to ratio to make the data
 more reasonable, which are listed below,
 
@@ -56,21 +56,284 @@ sent_to_poi_ratio: Sent to poi /all message the person sent
 shared_receipt_with_poi_ratio: 'shared_receipt_with_poi'/'to_messages'
 [only one record is over 1, which might be a typero, here I just assumed it is 1]
 
+In feature selection part in Project - Identify Fraud from Enron Email-Revised
+ipython notebook, based on the correlation calculation, we could see the three
+new-engineered features do get the higher correlation (positive) with poi compare to their
+single feature, which are the good features to be included in the model. From
+feature selection (either KBest or Treebased model), sent_to_poi_ratio and shared_receipt_with_poi_ratio have the higher rank which need to be included in
+the model.
+
+KBest/TreeBased Model
+
 As the number scale in different features are different, I used the MinmaxScaler to
 map all the values to 0-1, although tree-based model do not require that. Then
-I used two methods one is treebased model and one is SelectKBest. The detaild
-score was embeded in the project doc, and what i focused on is the common lowest
-scored features which i decide to exclude them in the model, which I listed below,
+I used two methods one is treebased model and one is SelectKBest I tried in the
+ipython nodetebook. The detaild score was embeded in the project doc, and what i
+focused on is the common lowest scored features which i decide to exclude them
+in the model, which I listed below,
 
 restricted_stock_deferred
 from_message
 to_message
 deferral_payments
 director_fees
+from_this_person_to_poi
 
-3. What algorithm did you end up using? What other one(s) did you try?
-How did model performance differ between algorithms?
-[relevant rubric item: “pick an algorithm”]
+Below is the KBest result,
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>features</th>
+      <th>scores</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9</th>
+      <td>exercised_stock_options</td>
+      <td>24.815080</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>total_stock_value</td>
+      <td>24.179972</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>bonus</td>
+      <td>20.792252</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>salary</td>
+      <td>18.289684</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>sent_to_poi_ratio</td>
+      <td>12.818278</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>deferred_income</td>
+      <td>11.458477</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>long_term_incentive</td>
+      <td>9.922186</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>restricted_stock</td>
+      <td>8.828679</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>total_payments</td>
+      <td>8.772778</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>shared_receipt_with_poi_ratio</td>
+      <td>7.744506</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>shared_receipt_with_poi</td>
+      <td>7.385691</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>loan_advances</td>
+      <td>7.184056</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>expenses</td>
+      <td>6.094173</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>from_poi_to_this_person</td>
+      <td>4.225818</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>other</td>
+      <td>4.187478</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>from_this_person_to_poi</td>
+      <td>2.187071</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>director_fees</td>
+      <td>2.126328</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>received_from_poi_ratio</td>
+      <td>1.677382</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>to_messages</td>
+      <td>0.866376</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>deferral_payments</td>
+      <td>0.224611</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>from_messages</td>
+      <td>0.189798</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>restricted_stock_deferred</td>
+      <td>0.065500</td>
+    </tr>
+  </tbody>
+</table>
+
+TreeBased model is below,
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>features</th>
+      <th>scores</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>total_stock_value</td>
+      <td>0.097293</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>bonus</td>
+      <td>0.095976</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>restricted_stock</td>
+      <td>0.078907</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>exercised_stock_options</td>
+      <td>0.075108</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>deferred_income</td>
+      <td>0.067322</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>other</td>
+      <td>0.063992</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>from_this_person_to_poi</td>
+      <td>0.063415</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>sent_to_poi_ratio</td>
+      <td>0.061489</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>total_payments</td>
+      <td>0.055093</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>salary</td>
+      <td>0.049618</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>shared_receipt_with_poi_ratio</td>
+      <td>0.048545</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>expenses</td>
+      <td>0.046949</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>long_term_incentive</td>
+      <td>0.036968</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>shared_receipt_with_poi</td>
+      <td>0.036005</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>from_poi_to_this_person</td>
+      <td>0.035730</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>from_messages</td>
+      <td>0.024428</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>to_messages</td>
+      <td>0.021906</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>received_from_poi_ratio</td>
+      <td>0.017253</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>deferral_payments</td>
+      <td>0.014159</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>restricted_stock_deferred</td>
+      <td>0.004394</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>loan_advances</td>
+      <td>0.003810</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>director_fees</td>
+      <td>0.001639</td>
+    </tr>
+  </tbody>
+</table>
+
+Also, in order to get the better performance, Except manually select the features
+based on the model result, I used the pipeline method to incorporate them with different
+prediction algorithm, which would be automatically incorporated in the process
+and got the best model.
+
+
+Modeling Process
 
 The project is ending up using AdaBoostClassifier model with f1 score 0.44, accuracy
 0.44 and recall 0.44, which is pretty balanced in the performance and has the
@@ -85,14 +348,7 @@ The model performance do vary a lot between different models especially
 in precision, recall, and f1 score, but in general accuracy and recall is
 pretty hard get the higher score than the accuracy.
 
-4. What does it mean to tune the parameters of an algorithm, and
-what can happen if you don’t do this well?  How did you tune the parameters of
-your particular algorithm? What parameters did you tune?
-(Some algorithms do not have parameters that you need to tune -- if this is the
-case for the one you picked, identify and briefly explain how you would have
-done it for the model that was not your final choice or a different model that
-does utilize parameter tuning, e.g. a decision tree classifier).
-[relevant rubric items: “discuss parameter tuning”, “tune the algorithm”]
+Parameter Tuning
 
 For the model tuning, if we don't do it, it will impact the model performance. In
 the project, I used grid search to tune the model and try to get the best parameter.
@@ -104,23 +360,26 @@ Random Forest- n_estimators; max_depth
 AdaBoost- n_estimators; algorithm
 GradientBoosting - loss; n_estimators; max_depth
 
-5. What is validation, and what’s a classic mistake you can make if you do it
-wrong? How did you validate your analysis?
-[relevant rubric items: “discuss validation”, “validation strategy”]
+Model Validation
 
-for the validation, I used the k-fold cross validation to get the prediction values
-and used the precision, recall, f1 to evaluate the model performance. The common
+It's the necessary way after model set up with the training dataset. It's the
+process to evaluate the model using test dataset which is not used as training 
+dataset in the model training.The validation would be a good way to evaluate
+the prediction capability of the model, and it would on the other hand to check
+the overfitting issue.
+
+for the validation, I changed to use StratifiedShuffleSplit to evaludate the model
+performance as the dataset is pretty imbalanced.(k-fold cross validation might
+be better to be used in the balanced dataset. The common
 mistake would be only using accuracy to validate the model as the dataset is not balanced.
 
-6. Give at least 2 evaluation metrics and your average performance for each of them.
-Explain an interpretation of your metrics that says something
-human-understandable about your algorithm’s performance.
-[relevant rubric item: “usage of evaluation metrics”]
 
-a. How many are classified 'fraud' correctly out of all truely 'fraud' people.
+Matrix - Precision & Recall
+
+Precision: How many are classified 'fraud' correctly out of all truely 'fraud' people.
 if it is good, it will identify most of people involved in the fraud issue, but might
-bring some innocent people.
+bring some innocent people in.
 
-b. How many are classified 'fraud' correctly out of all labeled 'fraud' people.
+Recall: How many are classified 'fraud' correctly out of all labeled 'fraud' people.
 if it is good, it will make sure all the labeled fraud people are higher likely involved
 in the fraud, but it might miss some people involved in the fraud issue.
