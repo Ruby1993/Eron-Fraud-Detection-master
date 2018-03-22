@@ -1,6 +1,6 @@
-Project Summary
+## Project Summary
 
-Project Background
+#### Project Background
 In 2000, Enron was one of the largest companies in the United States.
 By 2002, it had collapsed into bankruptcy due to widespread corporate fraud.
 In the resulting Federal investigation, a significant amount of typically
@@ -16,7 +16,7 @@ In order to wrap up this detective work, we do have a list of person that are
 already tagged with 'fraud' as they were addicted, reached a settlement or
 deal with the government, or testified in exchange for prosecution immunity.
 
-Problem Simplification
+#### Problem Simplification
 Identify persons who are in the corporate fraud based on the available data
 within financial features, email features, and available 'poi' labels.
 
@@ -33,7 +33,7 @@ Modeling Creation/Validation:
     - Adopted the stratified shuffle split cross validation to fully make use
      of our dataset, and pick the best model we built.
 
-Dataset Overview
+#### Dataset Overview
 
 For the dataset we had, there are 146 records and 21 variables.
 
@@ -48,7 +48,7 @@ Email features(6)
 POI Feature-POI label(1)
 [‘poi’] (boolean, represented as integer)
 
-Outliers Issue
+#### Outliers Issue
 Based on data exploration, there are several outliers I found and will remove,
 - TOTAL: This row is the sum of each variable, which need to removed.
 - LOCKHART EUGENE E: Except the POI label(false), there is no data in all other
@@ -56,9 +56,9 @@ variables.
 - THE TRAVEL AGENCY IN THE PARK: Not related to the person based on the name.
 
 
-Feature selection process
+#### Feature selection process
 
-New Feature engineered
+- New Feature engineered
 Before feature selection, I added three features related to ratio to make the data
 more reasonable, which are listed below,
 
@@ -76,7 +76,7 @@ single feature, which are the good features to be included in the model. From
 feature selection (either KBest or Treebased model), sent_to_poi_ratio and shared_receipt_with_poi_ratio have the higher rank which need to be included in
 the model.
 
-KBest/TreeBased Model
+- KBest/TreeBased Model
 
 As the number scale in different features are different, I used the MinmaxScaler to
 map all the values to 0-1, although tree-based model do not require that. Then
@@ -346,7 +346,7 @@ prediction algorithm, which would be automatically incorporated in the process
 and got the best model.
 
 
-Modeling Process
+#### Modeling Process
 
 The project is ending up using AdaBoostClassifier model with f1 score 0.44, accuracy
 0.44 and recall 0.44, which is pretty balanced in the performance and has the
@@ -373,7 +373,7 @@ Random Forest- n_estimators; max_depth
 AdaBoost- n_estimators; algorithm
 GradientBoosting - loss; n_estimators; max_depth
 
-Model Validation
+#### Model Validation
 
 It's the necessary way after model set up with the training dataset. It's the
 process to evaluate the model using test dataset which is not used as training
@@ -387,7 +387,7 @@ be better to be used in the balanced dataset. The common
 mistake would be only using accuracy to validate the model as the dataset is not balanced.
 
 
-Matrix - Precision & Recall
+#### Matrix - Precision & Recall
 
 Precision: How many are classified 'fraud' correctly out of all truely 'fraud' people.
 if it is good, it will identify most of people involved in the fraud issue, but might
@@ -397,7 +397,7 @@ Recall: How many are classified 'fraud' correctly out of all labeled 'fraud' peo
 if it is good, it will make sure all the labeled fraud people are higher likely involved
 in the fraud, but it might miss some people involved in the fraud issue.
 
-Final output
+#### Final output
 
 Based on the final result, I decide to choose the AdaBoostClassifier with  
 precision 0.44974	and recall 0.34450	, and the parameters I chose  are
