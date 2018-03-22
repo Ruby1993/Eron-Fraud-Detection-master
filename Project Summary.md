@@ -158,21 +158,21 @@ From the feature selection below (either KBest or Treebased model), sent_to_poi_
 have the higher rank which need to be included in the model.
 
 
-- KBest/TreeBased Model (Feature selection)
+- KBest/TreeBased Model/ (Feature selection)
 
 As the number scale in different features are different, I used the MinmaxScaler to
 map all the values to 0-1, although tree-based model do not require that. Then
 I used two methods one is treebased model and one is SelectKBest I tried in the
-ipython nodetebook. The detaild score was embeded in the project doc, and what i
+ipython nodetebook. The detaild score was embeded in the project doc, and what I
 focused on is the common lowest scored features which i decide to exclude them
 in the model, which I listed below,
 
-restricted_stock_deferred
-from_message
-to_message
-deferral_payments
-director_fees
-from_this_person_to_poi
+     restricted_stock_deferred
+     from_message
+     to_message
+     deferral_payments
+     director_fees
+     from_this_person_to_poi
 
 Below is the KBest result,
 
