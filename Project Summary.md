@@ -148,19 +148,17 @@ b. sent_to_poi_ratio: Sent to poi /all message the person sent(from_messages: th
 c. shared_receipt_with_poi_ratio: 'shared_receipt_with_poi'/'to_messages'
 [only one record is over 1, which might be a typero, here I just assumed it is 1]
 
-New Feature justification:
 
-based on the correlation calculation, we could see the three new-engineered features do get the higher correlation 
-(positive) with poi compare to their single feature, which are the good features to be included in the model. From
-feature selection (either KBest or Treebased model), sent_to_poi_ratio and shared_receipt_with_poi_ratio have the
-higher rank which need to be included in the model.
+Based on the correlation calculation, we could see the three new-engineered features do get the higher correlation 
+(positive) with poi compare to their previous single feature, which is a good sign to include them in the model. 
 
 ![png](graph/output_57_1.png)
 
+From the feature selection below (either KBest or Treebased model), sent_to_poi_ratio and shared_receipt_with_poi_ratio 
+have the higher rank which need to be included in the model.
 
 
-
-- KBest/TreeBased Model
+- KBest/TreeBased Model (Feature selection)
 
 As the number scale in different features are different, I used the MinmaxScaler to
 map all the values to 0-1, although tree-based model do not require that. Then
