@@ -40,17 +40,21 @@ Modeling Creation/Validation:
 - Variables: The 21 variables including financial features, email features,poi labels, which I listed below,
 
      financial features(14)
+     
      ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees'] (all units are in US dollars)
 
      Email features(6)
-     ['to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi'] (units are generally number of emails messages; notable exception is ‘email_address’, which is a text string)
+    
+    ['to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi'] (units are generally number of emails messages; notable exception is ‘email_address’, which is a text string)
 
      POI Feature-POI label(1)
-     [‘poi’] (boolean, represented as integer)
+    
+    [‘poi’] (boolean, represented as integer)
 
 - Number of the people who are labeled as poi: Only 18 people were labeled as poi out of 146 people.
 
 #### Outliers Issue
+
 Based on data exploration, there are several outliers I found and will remove,
 - TOTAL: This row is the sum of each variable, which need to removed.
 - LOCKHART EUGENE E: Except the POI label(false), there is no data in all other
@@ -60,9 +64,9 @@ variables.
 #### Missing Value Issue
 
 In general, out of 146 person, most of people has no data in the loan_advances, director_fees,
-restricted_stock_deferred variables, which we could see below,
+restricted_stock_deferred variables, which we could see below based on the percentage,
 
- poi                          0.000000
+    poi                          0.000000
     salary                       0.349315
     deferral_payments            0.732877
     total_payments               0.143836
@@ -85,13 +89,47 @@ restricted_stock_deferred variables, which we could see below,
     shared_receipt_with_poi      0.410959
  
  For the individuals, we could check how many variables each person miss in the dataset, and 
- LOCKHART EUGENE E only has the poi label without any other avaliable variables. 
+ LOCKHART EUGENE E only has the poi label without any other avaliable variables, which need to
+ be removed.
  
     LOCKHART EUGENE E                19
     GRAMM WENDY L                    17
     WROBEL BRUCE                     17
     WODRASKA JOHN                    17
     THE TRAVEL AGENCY IN THE PARK    17
+
+For these missing values, I filled it based on the features as we could see the email features are
+not missing randomly. So for the email features, I filled out based on the median of the email features,
+and fill out 0 for the related financial features. 
+
+The reason for this preprocessing is that we don't want to be misleaded by some intentional data missing
+on the email features. On the other hand, we don't want to each person's data were impacted by others 
+especially for the financial features, as the small number would be impacted by some huge number.
+
+Missing count on email features
+    to_messages                60
+    email_address               0
+    from_poi_to_this_person    60
+    from_messages              60
+    from_this_person_to_poi    60
+    shared_receipt_with_poi    60
+
+Missing count on financial features
+    salary                        51
+    deferral_payments            107
+    total_payments                21
+    loan_advances                142
+    bonus                         64
+    restricted_stock_deferred    128
+    deferred_income               97
+    total_stock_value             20
+    expenses                      51
+    exercised_stock_options       44
+    other                         53
+    long_term_incentive           80
+    restricted_stock              36
+    director_fees                129
+
 
 #### Feature selection process
 
