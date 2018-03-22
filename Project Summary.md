@@ -479,6 +479,9 @@ Recall: How many are classified 'fraud' correctly out of all labeled 'fraud' peo
 if it is good, it will make sure all the labeled fraud people are higher likely involved
 in the fraud, but it might miss some people involved in the fraud issue.
 
+Precision Score is when the algorithm guesses that somebody is a POI, this measures how certain we are that the person really is a POI.
+Recall Score is when the algorithm that somebody is a POI, this measures how much percentage are truely fraud in our labeled fraud group.
+
 #### Final output
 
 Based on the final result, I decide to choose the AdaBoostClassifier with  
