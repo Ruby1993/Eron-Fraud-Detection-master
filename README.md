@@ -2183,25 +2183,20 @@ cal_evaluation('GradientBoostingClassifier', confusion_matrix(y,GB_CV_result))
 
 
 
-#### Conclusion
+    #### Conclusion
 
-Based on the final result, I decide to choose the AdaBoostClassifier with f1 score 0.444, and the parameters I choosed  are algorithm - 'SAMME.R', n_estimators - 12.
+    Based on the final result, I decide to choose the AdaBoostClassifier with  precision 0.44974	and recall 0.34450	, and the parameters I chose  are algorithm - 'SAMME.R', n_estimators 15.
 
-Basically, it is the whole modelling process, which include feature preprocessiong(null value fill in/outliers removal/ feature standardize), feature creation, feature selection, model building, model validation and evaludation.
+    Basically, it is the whole modeling process, which include feature preprocessing(null value fill in/outliers removal/ feature standardize), feature creation, feature selection, model building, model validation and evaluation.
 
-In the python file, in order to get a better model after tunining with the more flexible pipeline method, instead selecting the features based on three models by our instinct, I built the pipeline with different feature selection models and combine them with different prediction models in order to do a more comprehensive process.
+    In the python file, in order to get a better model after tuning with the more flexible pipeline method, instead selecting the features based on three models by our instinct, I built the pipeline with different feature selection models and combine them with different prediction models in order to do a more comprehensive process.
 
-For the whole process, it could be broken down into parts.
-Feature preprocessing:
-     - Outliers detection and removal
-     - Fill in the nan value by considering features in different groups
-     - Standardize the feature
-Feature Creation
-Modelling Creation/Validation:
-     - Adopted the K-fold cross validation and the stratified shuffle split cross validation to fully make use of our dataset.
-    - Used grid search to find the optimal parameters based on the validation result.
-
-
-```python
-
-```
+    For the whole process, it could be broken down into parts.
+    Feature preprocessing:
+         - Outliers detection and removal
+         - Fill in the nan value by considering features in different groups
+         - Standardize the feature
+    Feature Creation
+    Modeling Creation/Validation:
+         - Adopted the K-fold cross validation and the stratified shuffle split cross validation to fully make use of our dataset.
+        - Used grid search to find the optimal parameters based on the validation result.
