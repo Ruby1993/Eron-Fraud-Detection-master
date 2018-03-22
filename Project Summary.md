@@ -430,8 +430,8 @@ and got the best model.
 
 #### Modeling Process
 
-The project is ending up using AdaBoostClassifier model with f1 score 0.44, accuracy
-0.44 and recall 0.44, which is pretty balanced in the performance and has the
+The project is ending up using AdaBoostClassifier model with precision 0.44974	and recall 0.34450, 
+which is pretty balanced in the performance and has the
 highest recall in all my models. But if we would prefer higher score in
 precision(Out of all the items labeled as positive, how many truly belong to
 the positive class), logisticRegression has a better performance with 0.6 precision.
