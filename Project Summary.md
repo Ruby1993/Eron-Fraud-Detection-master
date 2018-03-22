@@ -443,7 +443,7 @@ The model performance do vary a lot between different models especially
 in precision, recall, and f1 score, but in general accuracy and recall is
 pretty hard get the higher score than the accuracy.
 
-Parameter Tuning
+#### Parameter Tuning
 
 For the model tuning, if we don't do it, it will impact the model performance. In
 the project, I used grid search to tune the model and try to get the best parameter.
