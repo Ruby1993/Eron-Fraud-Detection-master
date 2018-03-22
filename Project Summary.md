@@ -107,14 +107,17 @@ on the email features. On the other hand, we don't want to each person's data we
 especially for the financial features, as the small number would be impacted by some huge number.
 
 Missing count on email features
+    
     to_messages                60
     email_address               0
     from_poi_to_this_person    60
     from_messages              60
     from_this_person_to_poi    60
     shared_receipt_with_poi    60
-
-Missing count on financial features
+    
+  
+  Missing count on financial features  
+  
     salary                        51
     deferral_payments            107
     total_payments                21
