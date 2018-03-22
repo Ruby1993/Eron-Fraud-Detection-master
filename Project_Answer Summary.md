@@ -20,6 +20,19 @@ Problem Simplification
 Identify persons who are in the corporate fraud based on the available data
 within financial features, email features, and available 'poi' labels.
 
+For the whole process, it could be broken down into parts below,
+Feature preprocessing:
+     - Outliers detection and removal
+     - Fill in the nan value by considering features in different groups
+     - Standardize the feature
+Feature Creation
+Modeling Creation/Validation:
+    - Built up the pipelines and include the naive bayes, decision tree, logistic
+    Regression, support vector machine, KNN, random forest, Adaboost, and Gradientboost.
+    - Used grid search to find the optimal parameters based on the test result.
+    - Adopted the stratified shuffle split cross validation to fully make use
+     of our dataset, and pick the best model we built.
+
 Dataset Overview
 
 For the dataset we had, there are 146 records and 21 variables.
@@ -363,12 +376,12 @@ GradientBoosting - loss; n_estimators; max_depth
 Model Validation
 
 It's the necessary way after model set up with the training dataset. It's the
-process to evaluate the model using test dataset which is not used as training 
+process to evaluate the model using test dataset which is not used as training
 dataset in the model training.The validation would be a good way to evaluate
-the prediction capability of the model, and it would on the other hand to check
-the overfitting issue.
+the prediction capability of the model, and it is the necessary step to pick up
+the best model.
 
-for the validation, I changed to use StratifiedShuffleSplit to evaludate the model
+for the validation, I changed to use StratifiedShuffleSplit to evaluate the model
 performance as the dataset is pretty imbalanced.(k-fold cross validation might
 be better to be used in the balanced dataset. The common
 mistake would be only using accuracy to validate the model as the dataset is not balanced.
@@ -383,3 +396,19 @@ bring some innocent people in.
 Recall: How many are classified 'fraud' correctly out of all labeled 'fraud' people.
 if it is good, it will make sure all the labeled fraud people are higher likely involved
 in the fraud, but it might miss some people involved in the fraud issue.
+
+Final output
+
+Based on the final result, I decide to choose the AdaBoostClassifier with  
+precision 0.44974	and recall 0.34450	, and the parameters I chose  are
+algorithm - 'SAMME.R', n_estimators 15.
+
+Basically, it is the whole modeling process, which include feature preprocessing
+(null value fill in/outliers removal/ feature standardize), feature creation,
+feature selection, model building, model validation and evaluation.
+
+In the python file, in order to get a better model after tuning with the more
+flexible pipeline method, instead selecting the features based on three models
+by our instinct, I built the pipeline with different feature selection models
+and combine them with different prediction models in order to do a more
+comprehensive process.
