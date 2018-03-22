@@ -35,9 +35,9 @@ Modeling Creation/Validation:
 
 #### Dataset Overview
 
-For the dataset we had, there are 146 records and 21 variables.
+- Total Number: For the dataset we had, there are 146 records and 21 variables.
 
-The 21 variables including financial features, email features,poi labels, which I listed below,
+- Variables: The 21 variables including financial features, email features,poi labels, which I listed below,
 
 financial features(14)
 ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees'] (all units are in US dollars)
@@ -47,6 +47,8 @@ Email features(6)
 
 POI Feature-POI label(1)
 [‘poi’] (boolean, represented as integer)
+
+- Number of the people who are labeled as poi: Only 18 people were labeled as poi out of 146 people.
 
 #### Outliers Issue
 Based on data exploration, there are several outliers I found and will remove,
