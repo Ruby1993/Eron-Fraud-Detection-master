@@ -103,7 +103,7 @@ not missing randomly. So for the email features, I filled out based on the media
 and fill out 0 for the related financial features. 
 
 The reason for this preprocessing is that we don't want to be misleaded by some intentional data missing
-on the email features. On the other hand, we don't want to each person's data were impacted by others 
+on the email features. On the other hand, we don't want to each person's data was impacted by others 
 especially for the financial features, as the small number would be impacted by some huge number.
 
 Missing count on email features
@@ -140,19 +140,25 @@ Missing count on email features
 Before feature selection, I added three features related to ratio to make the data
 more reasonable, which are listed below,
 
-received_from_poi_ratio: Received from poi/all message the person received
-(to_messages: the person was included in the to part)
-sent_to_poi_ratio: Sent to poi /all message the person sent
-(from_messages: the person was included in the from part)
-shared_receipt_with_poi_ratio: 'shared_receipt_with_poi'/'to_messages'
+a. received_from_poi_ratio: 
+Received from poi/all message the person received(to_messages: the person was included in the to part)
+
+b. sent_to_poi_ratio: Sent to poi /all message the person sent(from_messages: the person was included in the from part)
+
+c. shared_receipt_with_poi_ratio: 'shared_receipt_with_poi'/'to_messages'
 [only one record is over 1, which might be a typero, here I just assumed it is 1]
 
-In feature selection part in Project - Identify Fraud from Enron Email-Revised
-ipython notebook, based on the correlation calculation, we could see the three
-new-engineered features do get the higher correlation (positive) with poi compare to their
-single feature, which are the good features to be included in the model. From
-feature selection (either KBest or Treebased model), sent_to_poi_ratio and shared_receipt_with_poi_ratio have the higher rank which need to be included in
-the model.
+New Feature justification:
+
+based on the correlation calculation, we could see the three new-engineered features do get the higher correlation 
+(positive) with poi compare to their single feature, which are the good features to be included in the model. From
+feature selection (either KBest or Treebased model), sent_to_poi_ratio and shared_receipt_with_poi_ratio have the
+higher rank which need to be included in the model.
+
+![png](graph/output_57_1.png)
+
+
+
 
 - KBest/TreeBased Model
 
