@@ -7,6 +7,17 @@ In 2000, Enron was one of the largest companies in the United States. By 2002, i
 
 In order to wrap up this detective work, we do have a list of person that are already tagged with 'fraud' as they were addicted, reached a settlement or peal deal with the government, or testified in exchange for prosecution immunity.
 
+# File Structures
+
+
+- feature_format.py  feature preprocessing
+- poi_id.py           modeling
+- Model_tuning        model tuning
+-  test.py            model validation
+-  run_check          run the test file as pycharm recoginize it as nosetest
+- result_dump         output the result
+  
+
 ### Problem Clarification
 
 Identify persons who are in the corporate fraud based on the available data within financial features, email features, and available 'poi' labels.
