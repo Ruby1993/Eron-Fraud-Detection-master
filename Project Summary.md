@@ -402,13 +402,3 @@ Final output
 Based on the final result, I decide to choose the AdaBoostClassifier with  
 precision 0.44974	and recall 0.34450	, and the parameters I chose  are
 algorithm - 'SAMME.R', n_estimators 15.
-
-Basically, it is the whole modeling process, which include feature preprocessing
-(null value fill in/outliers removal/ feature standardize), feature creation,
-feature selection, model building, model validation and evaluation.
-
-In the python file, in order to get a better model after tuning with the more
-flexible pipeline method, instead selecting the features based on three models
-by our instinct, I built the pipeline with different feature selection models
-and combine them with different prediction models in order to do a more
-comprehensive process.
