@@ -17,7 +17,7 @@ already tagged with 'fraud' as they were addicted, reached a settlement or
 deal with the government, or testified in exchange for prosecution immunity.
 
 #### Problem Simplification
-Identify persons who are in the corporate fraud based on the available data
+The project here is to identify persons who are in the corporate fraud based on the available data
 within financial features, email features, and available 'poi' labels.
 
 For the whole process, it could be broken down into parts below,
@@ -57,6 +57,41 @@ Based on data exploration, there are several outliers I found and will remove,
 variables.
 - THE TRAVEL AGENCY IN THE PARK: Not related to the person based on the name.
 
+#### Missing Value Issue
+
+In general, out of 146 person, most of people has no data in the loan_advances, director_fees,
+restricted_stock_deferred variables, which we could see below,
+
+ poi                          0.000000
+    salary                       0.349315
+    deferral_payments            0.732877
+    total_payments               0.143836
+    loan_advances                0.972603
+    bonus                        0.438356
+    restricted_stock_deferred    0.876712
+    deferred_income              0.664384
+    total_stock_value            0.136986
+    expenses                     0.349315
+    exercised_stock_options      0.301370
+    other                        0.363014
+    long_term_incentive          0.547945
+    restricted_stock             0.246575
+    director_fees                0.883562
+    to_messages                  0.410959
+    email_address                0.000000
+    from_poi_to_this_person      0.410959
+    from_messages                0.410959
+    from_this_person_to_poi      0.410959
+    shared_receipt_with_poi      0.410959
+ 
+ For the individuals, we could check how many variables each person miss in the dataset, and 
+ LOCKHART EUGENE E only has the poi label without any other avaliable variables. 
+ 
+    LOCKHART EUGENE E                19
+    GRAMM WENDY L                    17
+    WROBEL BRUCE                     17
+    WODRASKA JOHN                    17
+    THE TRAVEL AGENCY IN THE PARK    17
 
 #### Feature selection process
 
