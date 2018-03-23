@@ -235,3 +235,16 @@ Recall Score is when the algorithm that somebody is a POI, this measures how muc
 Based on the final result, I decide to choose the AdaBoostClassifier with  
 precision 0.44974	and recall 0.34450	, and the parameters I chose  are
 algorithm - 'SAMME.R', n_estimators 15.
+
+
+### Reference 
+
+http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectFromModel.html
+
+http://scikit-learn.org/stable/modules/pipeline.html#pipeline
+
+http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html
+
+https://elitedatascience.com/python-machine-learning-tutorial-scikit-learn
+
+https://machinelearningmastery.com/automate-machine-learning-workflows-pipelines-python-scikit-learn/
