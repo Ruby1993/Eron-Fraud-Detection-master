@@ -158,9 +158,7 @@ From the feature selection below (either KBest or Treebased model), sent_to_poi_
 have the higher rank which need to be included in the model.
 
 For the model validation, I checked the best performance model with original dataset without the new engineered features.
-Refered by the results, the dataset without new engineered features negatively impact the model performance, which means the
-new engineered features do improve the model performance either on precisons or recalls.
-
+Refered by the results, the dataset without new engineered features negatively impact the model performance (precision and recall all dropped), which means the new engineered features do improve the model performance either on precisons or recalls.
 
 - KBest/PCA/TreeBased Model (Feature selection)
 
@@ -173,7 +171,7 @@ order to make the features selections work on the model training.
 For each of models, I tried the k from 6 to 20 features for KBest, n_components from 10 to 20, and
 maximum depth from 2 to 7 with different estimator.
 
-From the final results, 
+From the final results, we could see the best model we picked based on the validation result is when k=11.
 
 
 #### Modeling Process
@@ -233,7 +231,7 @@ Recall Score is when the algorithm that somebody is a POI, this measures how muc
 #### Final output
 
 Based on the final result, I decide to choose the AdaBoostClassifier with  
-precision 0.44974	and recall 0.34450	, and the parameters I chose  are
+Precision: 0.48621	Recall: 0.37900, and the parameters I chose  are
 algorithm - 'SAMME.R', n_estimators 15.
 
 
